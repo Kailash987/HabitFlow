@@ -19,17 +19,21 @@ const loginValidation = [
   body('password').notEmpty().withMessage('Password is required'),
 ];
 
-// Auth routes
-router.post('/register', registerValidation, authController.register);
-router.post('/login', loginValidation, authController.login);
-router.post('/logout', authController.logout);
-router.get('/me', authController.getMe);
-router.put('/update-profile', authController.updateProfile);
-router.put('/update-password', [
+const passwordUpdateValidation = [
   body('currentPassword').notEmpty().withMessage('Current password is required'),
   body('newPassword')
     .isLength({ min: 6 })
     .withMessage('New password must be at least 6 characters long'),
-], authController.updatePassword);
+];
+
+// Public routes
+router.post('/register', registerValidation, authController.register);
+router.post('/login', loginValidation, authController.login);
+router.post('/logout', authController.logout);
+
+// Protected routes (require authentication)
+router.get('/me', protect, authController.getMe);
+router.put('/update-profile', protect, authController.updateProfile);
+router.put('/update-password', protect, passwordUpdateValidation, authController.updatePassword);
 
 export default router;

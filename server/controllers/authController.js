@@ -142,7 +142,7 @@ export const logout = (req, res) => {
       httpOnly: true,
       expires: new Date(0),
       secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      sameSite: 'lax',
     });
 
     res.status(200).json({ message: 'Logged out successfully' });
@@ -162,6 +162,16 @@ export const logout = (req, res) => {
 // @access  Private
 export const getMe = async (req, res) => {
   try {
+    // Check if user exists (added for safety)
+    if (!req.user) {
+      return res.status(401).json({
+        error: {
+          message: 'Not authenticated',
+          status: 401,
+        },
+      });
+    }
+
     const user = await User.findById(req.user._id);
     if (!user) {
       return res.status(404).json({
@@ -197,6 +207,15 @@ export const getMe = async (req, res) => {
 // @access  Private
 export const updateProfile = async (req, res) => {
   try {
+    if (!req.user) {
+      return res.status(401).json({
+        error: {
+          message: 'Not authenticated',
+          status: 401,
+        },
+      });
+    }
+
     const { name, email, profilePicture, timezone, preferences } = req.body;
 
     // Find user
@@ -265,6 +284,15 @@ export const updatePassword = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
+    }
+
+    if (!req.user) {
+      return res.status(401).json({
+        error: {
+          message: 'Not authenticated',
+          status: 401,
+        },
+      });
     }
 
     const { currentPassword, newPassword } = req.body;
