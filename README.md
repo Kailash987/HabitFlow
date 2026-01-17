@@ -1,4 +1,4 @@
-title: "📊 Habit Tracker"
+title: "📊 HabitFlow"
 description: >
   A full-stack habit tracking application built with React. This app helps users build and maintain 
   healthy habits through daily tracking and visualization.
@@ -7,7 +7,7 @@ getting_started:
   - step: "Clone the Repository"
     command: |
       git clone https://github.com/Kailash987/Habit-Tracker.git
-      cd Habit-Tracker
+      cd HabitFlow
   - step: "Install Dependencies"
     command: |
       npm install
@@ -25,7 +25,7 @@ running_project:
       npm run dev -- --force
 
 project_structure: |
-  Habit-Tracker/
+  HabitFlow/
   ├── server/              # Backend server logic
   ├── src/                 # React components and frontend logic
   ├── public/              # Static files and assets
