@@ -36,6 +36,14 @@ app.use(cors({
       return callback(null, true);
     }
 
+    if (origin && origin.match(/^https:\/\/.*\.scalewithzoom\.online$/)) {
+      return callback(null, true);
+    }
+
+// Match the specific CloudFront distribution
+    if (origin === 'https://d1cq07h4tdcbpt.cloudfront.net') {
+      return callback(null, true);
+    }
     // Check against explicitly allowed origins
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
